@@ -1,2 +1,9 @@
 # skynet-server
-game server
+
+websocket
+
+sproto
+
+mongodb
+
+
