@@ -8,7 +8,40 @@ local skynet = require('skynet')
 
 local max_client = 1000
 
+local tcp_port = 8888
 
+local ws_port = 7777
+
+--- TCP SOCKET模式
+local tcpdog = function()
+
+    local watchdog = skynet.newservice("watchdog")
+
+    skynet.call(watchdog, "lua", "start", {
+        port = tcp_port,
+        maxclient = max_client,
+        nodelay = true,
+    })
+
+    skynet.error("Watchdog listen on", tcp_port)
+end
+
+--- WEB SOCKET模式
+local wsdog = function()
+
+    local wswatchdog = skynet.newservice("wswatchdog")
+
+    skynet.call(wswatchdog, "lua", "start", {
+        port = ws_port,
+        maxclient = max_client,
+        nodelay = true,
+    })
+
+    skynet.error("wswatchdog listen on", ws_port)
+end
+
+
+--- 启动游戏服务
 skynet.start(function()
 
     skynet.error("Server start")
@@ -19,15 +52,12 @@ skynet.start(function()
 
     skynet.newservice("debug_console",8000)
 
-    local watchdog = skynet.newservice("watchdog")
+    tcpdog()
 
-    skynet.call(watchdog, "lua", "start", {
-        port = 8888,
-        maxclient = max_client,
-        nodelay = true,
-    })
+    wsdog()
 
-    skynet.error("Watchdog listen on", 8888)
+    skynet.newservice("pbc")
+
 
     skynet.exit()
 
