@@ -7,12 +7,11 @@
 local skynet = require('skynet')
 
 local max_client = 1000
-
 local tcp_port = 8888
-
 local ws_port = 7777
+local debug_port = 8000
 
---- TCP SOCKET模式
+-- TCP SOCKET模式
 local tcpdog = function()
 
     local watchdog = skynet.newservice("watchdog")
@@ -23,10 +22,10 @@ local tcpdog = function()
         nodelay = true,
     })
 
-    skynet.error("Watchdog listen on", tcp_port)
+    skynet.error("tcp socket watchdog listen on", tcp_port)
 end
 
---- WEB SOCKET模式
+-- WEB SOCKET模式
 local wsdog = function()
 
     local wswatchdog = skynet.newservice("wswatchdog")
@@ -37,27 +36,26 @@ local wsdog = function()
         nodelay = true,
     })
 
-    skynet.error("wswatchdog listen on", ws_port)
+    skynet.error("web socket  watchdog listen on", ws_port)
 end
 
 
---- 启动游戏服务
+-- 启动游戏服务
 skynet.start(function()
 
     skynet.error("Server start")
 
     if not skynet.getenv "daemon" then
-        local console = skynet.newservice("console")
+        skynet.newservice("console")
     end
 
-    skynet.newservice("debug_console",8000)
+    skynet.newservice("debug_console",debug_port)
 
     tcpdog()
 
     wsdog()
 
     skynet.newservice("pbc")
-
 
     skynet.exit()
 

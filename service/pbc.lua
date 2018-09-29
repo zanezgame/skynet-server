@@ -58,6 +58,7 @@ end
 
 
 skynet.start(function ()
+
 	skynet.error("init pbc...")
 	CMD.init()
 
