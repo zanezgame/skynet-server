@@ -1,9 +1,6 @@
-
-
 local skynet = require "skynet"
 
 local watchdog
-
 
 local CMD = {}
 
@@ -38,7 +35,7 @@ skynet.start(function()
 
         local f = CMD[command]
 
-        assert(f,"Invalid command")
+        assert(f, "Invalid command")
 
         skynet.ret(skynet.pack(f(...)))
     end)
@@ -46,9 +43,9 @@ skynet.start(function()
     -- 收到客服端的信息
     skynet.dispatch("client", function(_, _, msg)
 
-            --todo: client msg
+        --todo: client msg
 
-            skynet.error("client===>",msg)
+        skynet.error("client===>", msg)
     end)
 end)
 

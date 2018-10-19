@@ -9,8 +9,10 @@ local agent = {}
 
 function SOCKET.open(fd, addr)
 	skynet.error("new websocket client from : " .. addr)
-	agent[fd] = skynet.newservice("agent")
-	skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
+	--agent[fd] = skynet.newservice("agent")
+	--skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self() })
+
+	skynet.call(gate, "lua", "accept", fd)
 end
 
 local function close_agent(fd)
@@ -39,6 +41,9 @@ function SOCKET.warning(fd, size)
 end
 
 function SOCKET.data(fd, msg)
+
+	skynet.error("SOCKET.data",fd,msg)
+
 end
 
 function CMD.start(conf)

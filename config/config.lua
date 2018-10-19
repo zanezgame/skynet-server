@@ -35,3 +35,20 @@ snax    = _skynet.."service/?.lua"
 
 
 
+---游戏端口配置
+
+max_client   = 10000         --socket 最大连接数
+tcp_port     = 8888          --tcp socket端口
+ws_port      = 7777          --web socket端口
+debug_port   = 8000          --DEBUG 端口
+socket_mode  = 2             -- 0 tcp 1 web 2 混合
+
+---数据库
+mongodb_ip      = "127.0.0.1"
+mongodb_port    = 27017
+mongodb_dbname  = "poker"
+mongodb_auth    = ""
+mongodb_pwd     = ""
+
+
+

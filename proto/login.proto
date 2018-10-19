@@ -1,12 +1,13 @@
+syntax = "proto2";
 package Login;
 
-message LoginReq
+message c2s_login
 {
 	required string account = 1;
 	required string token = 2;
 }
 
-message LoginRsp
+message s2c_login
 {
 	required string account = 1;
 	required string token = 2;

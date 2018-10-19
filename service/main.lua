@@ -6,13 +6,14 @@
 
 local skynet = require('skynet')
 
-local max_client = 1000
-local tcp_port = 8888
-local ws_port = 7777
-local debug_port = 8000
+local max_client
+local tcp_port
+local ws_port
+local debug_port
+local socket_mode
 
--- TCP SOCKET模式
-local tcpdog = function()
+-- 启动 TCP SOCKET WATCH DOG 模式
+local start_tcpdog = function()
 
     local watchdog = skynet.newservice("watchdog")
 
@@ -25,8 +26,8 @@ local tcpdog = function()
     skynet.error("tcp socket watchdog listen on", tcp_port)
 end
 
--- WEB SOCKET模式
-local wsdog = function()
+--  启动 WEB SOCKET WATCH DOG 模式
+local start_wsdog = function()
 
     local wswatchdog = skynet.newservice("wswatchdog")
 
@@ -39,23 +40,77 @@ local wsdog = function()
     skynet.error("web socket  watchdog listen on", ws_port)
 end
 
+-- 启动 SOCKET 模式
+local start_socket_mode = function()
 
--- 启动游戏服务
-skynet.start(function()
+    if (socket_mode == 0) then
+        start_tcpdog() -- tcp
+    elseif (socket_mode == 1) then
+        start_wsdog()  -- web
+    elseif (socket_mode == 2) then
+        start_tcpdog()
+        start_wsdog()
+    end
+end
 
-    skynet.error("Server start")
-
+--是否开启后台模式
+local start_daemon = function()
     if not skynet.getenv "daemon" then
         skynet.newservice("console")
     end
 
-    skynet.newservice("debug_console",debug_port)
+end
 
-    tcpdog()
+--启动控制台
+local start_console = function()
+    skynet.newservice("debug_console", debug_port)
 
-    wsdog()
+end
 
+--启动 protobuf 协议服务
+local start_pbc = function()
     skynet.newservice("pbc")
+end
+
+
+--启动数据库
+
+local start_db = function()
+    skynet.newservice("mongodb")
+end
+
+--初始化端口
+local init_port = function()
+
+    max_client = tonumber(skynet.getenv("max_clinet"))
+
+    tcp_port = tonumber(skynet.getenv("tcp_port"))
+
+    ws_port = tonumber(skynet.getenv("ws_port"))
+
+    debug_port = tonumber(skynet.getenv("debug_port"))
+
+    socket_mode = tonumber(skynet.getenv("socket_mode"))
+
+end
+
+
+-- 启动游戏服务
+skynet.start(function()
+
+    skynet.error("game server start ...")
+
+    init_port()
+
+    start_pbc()
+
+    start_db()
+
+    start_daemon()
+
+    start_console()
+
+    start_socket_mode()
 
     skynet.exit()
 
