@@ -1,19 +1,24 @@
-local utils = require "utils"
 local skynet = require "skynet"
 
 local M = {}
 
-function M.pack(name, msg)
-    local buf = skynet.call("pbc", "lua", "encode", name, msg)
-    local len = 2 + #name + 2 + #buf
-    return string.pack(">Hs2s2", len, name, buf)
+function M.sub_pack(name, data)
+    return skynet.call("pbc", "lua", "encode", name, data)
+
 end
 
-function M.unpack(data)
-    local name, buf = string.unpack(">s2s2", data)
-    utils.hex(buf)
-    local msg = skynet.call("pbc", "lua", "decode", name, buf)
-    return name, msg
+function M.main_pack(data)
+    return skynet.call("pbc", "lua", "encode", "Game.ProtoInfo", data)
+
+end
+
+function M.main_unpack(data)
+    return skynet.call("pbc", "lua", "decode", "Game.ProtoInfo", data)
+
+end
+
+function M.sub_unpack(name, data)
+    return skynet.call("pbc", "lua", "decode", name, data)
 end
 
 return M

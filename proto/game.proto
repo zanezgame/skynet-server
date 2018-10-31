@@ -1,0 +1,8 @@
+syntax = "proto2";
+package Game;
+
+message ProtoInfo {
+    optional int32  mainId      = 1;
+    optional int32  subId       = 2;
+    optional bytes  body        = 3;
+}

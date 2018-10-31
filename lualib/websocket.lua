@@ -1,4 +1,4 @@
-local socket = require "socket"
+local socket = require "skynet.socket"
 local wslib = {}
 --默认fin和mask
 function wslib:send_frame(fd, opcode, data)

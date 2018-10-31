@@ -2,7 +2,7 @@ PROTO_PATH=.
 
 .PHONY : all clean
 
-PROTOS = login
+PROTOS = login game
 
 all : $(foreach v, $(PROTOS), $(v).pb)
 
