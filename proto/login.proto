@@ -9,6 +9,18 @@ message c2s_login
 
 message s2c_login
 {
-	required string account = 1;
-	required string token = 2;
+	required int32 docode = 1;
+}
+
+message c2s_register
+{
+    required string account = 1;
+    required string passwd = 2;
+    required int32 phone = 3;
+}
+
+
+message s2c_register
+{
+    required int32 docode = 1;
 }

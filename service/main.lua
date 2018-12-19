@@ -4,7 +4,7 @@
 --- DateTime: 2018/9/26 0026 下午 21:01
 ---
 
-local skynet = require('skynet')
+local skynet = require "skynet"
 
 local max_client
 local tcp_port

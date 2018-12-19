@@ -2,7 +2,7 @@ local skynet = require "skynet"
 local websocket = require "websocket"
 local socket = require "socket"
 local protopack = require "protopack"
-local prototypes = require "prototypes"
+local protodefine = require "protodefine"
 
 local watchdog
 local CMD = {}
@@ -57,14 +57,14 @@ local client_dispatch = function(_, _, data)
 
     if (args ~= false and args.mainId ~= nil and args.mainId > 0) then
 
-        if args.mainId == prototypes.main_login then
+        if args.mainId == protodefine.main_login then
 
         else
-            skynet.error("Invalid command", args.mainId, args.subId)
+            skynet.error("Invalid MainId", args.mainId, args.subId)
         end
 
     else
-        skynet.error("Invalid command", args)
+        skynet.error("Invalid Client Data", args)
     end
 
 end
